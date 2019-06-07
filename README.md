@@ -1,2 +1,2 @@
 # candidate_service
-sample go project
+sample go project change
