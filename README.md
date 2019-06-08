@@ -11,7 +11,7 @@ sample go micro service
 ##### Presentation Layer - Handlers
 - This layer accepts request, parse request into Model objects and validates it
 - It invokes Services to perform action related to request
-- It accepts response frpm services, prepase JSON response and return to caller
+- It accepts response from services, prepare JSON response and return to caller
 
 ##### Business Layer - Services
 - This layer accepts parameters from resouce layer and perform actions
