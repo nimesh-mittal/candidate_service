@@ -8,7 +8,7 @@ sample go micro service
 
 ## Project Structure
 ### Three layers
-##### Presentation Layer - Resource
+##### Presentation Layer - Handlers
 - This layer accepts request, parse request into Model objects and validates it
 - It invokes Services to perform action related to request
 - It accepts response frpm services, prepase JSON response and return to caller
