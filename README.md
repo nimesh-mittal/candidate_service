@@ -1,7 +1,7 @@
 # Candidate Service
 sample go micro service
 
-## How to Build, install and run
+## How to build, install and run
 
 ##### `dep ensure`
 #####  `go run main.go`
