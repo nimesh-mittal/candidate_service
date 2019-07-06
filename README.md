@@ -57,7 +57,10 @@ sample go micro service
 12. Viper support **[done]**
 13. Kinesis support **[Not Started]**
 14. Rest call support **[Not Started]**
+15. Idempotence **[Not Started]**
+16. Distributed locking **[Not Started]**
 
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fnimesh-mittal%2Fcandidate_service.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fnimesh-mittal%2Fcandidate_service?ref=badge_large)
+
