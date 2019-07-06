@@ -1,4 +1,6 @@
 # Candidate Service
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fnimesh-mittal%2Fcandidate_service.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fnimesh-mittal%2Fcandidate_service?ref=badge_shield)
+
 sample go micro service
 
 ## How to build, install and run
@@ -57,4 +59,8 @@ sample go micro service
 14. Rest call support **[Not Started]**
 15. Idempotence **[Not Started]**
 16. Distributed locking **[Not Started]**
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fnimesh-mittal%2Fcandidate_service.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fnimesh-mittal%2Fcandidate_service?ref=badge_large)
 
