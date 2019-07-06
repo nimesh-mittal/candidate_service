@@ -57,7 +57,7 @@ sample go micro service
 12. Viper support **[done]**
 13. Kinesis support **[Not Started]**
 14. Rest call support **[Not Started]**
-15. Idempotence **[Not Started]**
+15. Idempotency **[Not Started]**
 16. Distributed locking **[Not Started]**
 
 
