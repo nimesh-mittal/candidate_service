@@ -1,0 +1,16 @@
+database:
+  url: "host=localhost port=5432 user=user1 dbname=db1 password=pass2123 sslmode=disable"
+  name: "test.db"
+  user: "admin"
+  password: "admin"
+  dialect: "postgres"
+  mongoURL: "mongodb url here"
+
+
+server:
+  host: "host name"
+  port: 8080
+
+newrelic:
+  appName: "app1"
+  licKey: "key here"
