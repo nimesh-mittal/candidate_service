@@ -5,8 +5,10 @@ import (
 	"time"
 )
 
+// AddressType represents address type of a candidate
 type AddressType string
 
+// Address represents address of a candidate
 type Address struct {
 	ID               string      `json:"id" gorm:"column:id,primary_key" validate:"required"`
 	FormattedAddress string      `json:"formatted_address" gorm:"column:formatted_address" validate:"required"`
@@ -22,6 +24,7 @@ type Address struct {
 	DeletedAt        *time.Time
 }
 
+// Candidate holds candidate details along with who columns
 type Candidate struct {
 	ID         string     `json:"id" gorm:"column:id,primary_key" validate:"required"`
 	Name       string     `json:"name" gorm:"column:name" validate:"required"`
@@ -35,15 +38,18 @@ type Candidate struct {
 	DeletedAt  *time.Time
 }
 
+// TableName to ensure table names are predictable
 func (Candidate) TableName() string {
 	return "candidates"
 }
 
+// TableName to ensure table names are predictable
 func (Address) TableName() string {
 	return "addresses"
 }
 
-type CandidateResponse struct {
+// Response is standard response from candidate api
+type Response struct {
 	Data  Candidate        `json: "candidate"`
 	Error commons.APIError `json: "error"`
 }
