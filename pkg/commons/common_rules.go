@@ -5,7 +5,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// validates pagination parameters
+// ValidatePaginationParams to validates pagination parameters
 func ValidatePaginationParams(fctx *FlowContext, limit string, offset string) ([]string, bool) {
 	logrus.WithField("TrackingID", fctx.TrackingID).Info("validating pagination params")
 
@@ -22,7 +22,7 @@ func ValidatePaginationParams(fctx *FlowContext, limit string, offset string) ([
 	return errors, len(errors) <= 0
 }
 
-// validates id
+// ValidateID to validates id
 func ValidateID(fctx *FlowContext, id string) ([]string, bool) {
 	logrus.WithField("TrackingID", fctx.TrackingID).Info("validating ID for valid UUID")
 
