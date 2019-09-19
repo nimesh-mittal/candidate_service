@@ -4,12 +4,8 @@ import (
 	"encoding/json"
 
 	"github.com/dunzoit/dunzo-microservices/mapping_service/src/main/mappers/constants"
-
-	"github.com/nitishm/go-rejson"
-
 	"github.com/gomodule/redigo/redis"
-
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"github.com/nitishm/go-rejson"
 	"github.com/sirupsen/logrus"
 )
 
@@ -52,8 +48,8 @@ func (ctx *RedisContext) ListCandidates(limit int64, offset int64) (*[]Candidate
 	return nil, nil
 }
 
-// TODO: make it efficient, current implementation is very hacky
 // GetCandidate get candidate by id
+// TODO: make it efficient, current implementation is very hacky
 func (ctx *RedisContext) GetCandidate(cid string) (*Candidate, error) {
 	conn := ctx.DB.Get()
 	defer conn.Close()
