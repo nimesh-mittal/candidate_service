@@ -12,18 +12,18 @@ import (
 	"github.com/pressly/chi/middleware"
 )
 
-// server context maintain service level state
+// ServerContext maintain service level state
 type ServerContext struct {
 	Router *chi.Mux
 	NRApp  *newrelic.Application
 }
 
-// structured logger holds instance of logrus
+// StructuredLogger holds instance of logrus
 type StructuredLogger struct {
 	Logger *logrus.Logger
 }
 
-// create new server context
+// New create new server context
 func New() *ServerContext {
 	router := chi.NewRouter()
 
@@ -40,17 +40,17 @@ func New() *ServerContext {
 	return &ServerContext{Router: router}
 }
 
-// Starts server on address
+// StartServer serves on address
 func (ctx *ServerContext) StartServer(address string) {
 	http.ListenAndServe(address, ctx.Router)
 }
 
-// register handler with a path
+// Register registers handler with a path
 func (ctx *ServerContext) Register(path string, handle func(http.ResponseWriter, *http.Request), method string) {
 	ctx.Router.MethodFunc(method, path, handle)
 }
 
-// mount sub router with a path
+// Mount mounts sub router with a path
 func (ctx *ServerContext) Mount(path string, handler http.Handler) {
 	ctx.Router.Mount(path, handler)
 }
