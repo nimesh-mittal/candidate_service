@@ -13,11 +13,13 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type CandidateRedisContext struct {
+// RedisContext holds redis db object
+type RedisContext struct {
 	DB *redis.Pool
 }
 
-func NewCandidateRedisContext(address string, password string, dbName string) (*CandidateRedisContext, error) {
+// NewCandidateRedisContext creates Redis context for candidate
+func NewCandidateRedisContext(address string, password string, dbName string) (*RedisContext, error) {
 	pool := &redis.Pool{
 		MaxIdle:   80,
 		MaxActive: 12000, // max number of connections
@@ -31,10 +33,11 @@ func NewCandidateRedisContext(address string, password string, dbName string) (*
 	}
 
 	defer logrus.Info("redis setup completed")
-	return &CandidateRedisContext{DB: pool}, nil
+	return &RedisContext{DB: pool}, nil
 }
 
-func (ctx *CandidateRedisContext) SafeClose() {
+// SafeClose gets called on program termination
+func (ctx *RedisContext) SafeClose() {
 	err := ctx.DB.Close()
 
 	if err != nil {
@@ -42,14 +45,16 @@ func (ctx *CandidateRedisContext) SafeClose() {
 	}
 }
 
-func (ctx *CandidateRedisContext) ListCandidates(limit int64, offset int64) (*[]Candidate, error) {
+// ListCandidates list all candidates from redis
+func (ctx *RedisContext) ListCandidates(limit int64, offset int64) (*[]Candidate, error) {
 	// TODO: pending implementation
 
 	return nil, nil
 }
 
 // TODO: make it efficient, current implementation is very hacky
-func (ctx *CandidateRedisContext) GetCandidate(cid string) (*Candidate, error) {
+// GetCandidate get candidate by id
+func (ctx *RedisContext) GetCandidate(cid string) (*Candidate, error) {
 	conn := ctx.DB.Get()
 	defer conn.Close()
 
@@ -67,7 +72,8 @@ func (ctx *CandidateRedisContext) GetCandidate(cid string) (*Candidate, error) {
 	return candidate, nil
 }
 
-func (ctx *CandidateRedisContext) CreateCandidate(candidate *Candidate) (*Candidate, error) {
+// CreateCandidate create candidate in redis
+func (ctx *RedisContext) CreateCandidate(candidate *Candidate) (*Candidate, error) {
 	conn := ctx.DB.Get()
 	defer conn.Close()
 
@@ -86,7 +92,8 @@ func (ctx *CandidateRedisContext) CreateCandidate(candidate *Candidate) (*Candid
 	return nil, redis.Error("unable to perform set")
 }
 
-func (ctx *CandidateRedisContext) UpdateCandidate(cid string, key string, value string) (string, error) {
+// UpdateCandidate update candidate
+func (ctx *RedisContext) UpdateCandidate(cid string, key string, value string) (string, error) {
 	conn := ctx.DB.Get()
 	defer conn.Close()
 
@@ -105,7 +112,8 @@ func (ctx *CandidateRedisContext) UpdateCandidate(cid string, key string, value 
 	return constants.Empty, redis.Error("unable to perform set")
 }
 
-func (ctx *CandidateRedisContext) DeleteCandidate(cid string) (*Candidate, error) {
+// DeleteCandidate delete candidate by id
+func (ctx *RedisContext) DeleteCandidate(cid string) (*Candidate, error) {
 	conn := ctx.DB.Get()
 	defer conn.Close()
 
