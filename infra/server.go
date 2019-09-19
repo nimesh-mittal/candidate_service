@@ -12,11 +12,13 @@ import (
 	"github.com/pressly/chi/middleware"
 )
 
+// server context maintain service level state
 type ServerContext struct {
 	Router *chi.Mux
 	NRApp  *newrelic.Application
 }
 
+// structured logger holds instance of logrus
 type StructuredLogger struct {
 	Logger *logrus.Logger
 }

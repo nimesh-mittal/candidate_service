@@ -4,9 +4,12 @@ import (
 	"candidate_service/pkg/commons"
 )
 
+// heart beat status of the service
 type Heartbeat struct {
 	Status string `json: "status"`
 }
+
+// health info
 type Info struct {
 	CPU                interface{}
 	Memory             interface{}
@@ -17,6 +20,7 @@ type Info struct {
 	KinesisHealth      string
 }
 
+// health of the service
 type Health struct {
 	CPU                interface{}
 	Memory             interface{}
@@ -27,6 +31,7 @@ type Health struct {
 	KinesisHealth      string
 }
 
+// heart beat response of the service
 type HeartbeatResponse struct {
 	Data  Heartbeat        `json: "heartbeat"`
 	Error commons.APIError `json: "error"`
