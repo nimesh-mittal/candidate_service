@@ -15,11 +15,13 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type CandidateMongoDBContext struct {
+// MongoDBContext holds db object
+type MongoDBContext struct {
 	DB *mongo.Client
 }
 
-func NewCandidateMongoDBContext(url string) (*CandidateMongoDBContext, error) {
+// NewCandidateMongoDBContext creates repo object
+func NewCandidateMongoDBContext(url string) (*MongoDBContext, error) {
 	ctx1, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	client, err := mongo.Connect(ctx1, url)
 
@@ -37,10 +39,11 @@ func NewCandidateMongoDBContext(url string) (*CandidateMongoDBContext, error) {
 	}
 
 	defer logrus.Info("mongo database setup completed")
-	return &CandidateMongoDBContext{DB: client}, nil
+	return &MongoDBContext{DB: client}, nil
 }
 
-func (ctx *CandidateMongoDBContext) SafeClose() {
+// SafeClose gets called when program terminates
+func (ctx *MongoDBContext) SafeClose() {
 	err := ctx.DB.Disconnect(context.TODO())
 
 	if err != nil {
@@ -48,7 +51,8 @@ func (ctx *CandidateMongoDBContext) SafeClose() {
 	}
 }
 
-func (ctx *CandidateMongoDBContext) ListCandidates(fCtx *commons.FlowContext, limit int, offset int) (*[]Candidate, error) {
+// ListCandidates gets candidates from db
+func (ctx *MongoDBContext) ListCandidates(fCtx *commons.FlowContext, limit int, offset int) (*[]Candidate, error) {
 	findOptions := options.Find()
 	findOptions.SetLimit(int64(limit))
 	findOptions.SetSkip(int64(offset))
@@ -82,7 +86,8 @@ func (ctx *CandidateMongoDBContext) ListCandidates(fCtx *commons.FlowContext, li
 }
 
 // TODO: make it efficient, current implementation is very hacky
-func (ctx *CandidateMongoDBContext) GetCandidate(fCtx *commons.FlowContext, cid string) (*Candidate, error) {
+// GetCandidate gets candidates from db
+func (ctx *MongoDBContext) GetCandidate(fCtx *commons.FlowContext, cid string) (*Candidate, error) {
 	findOptions := options.Find()
 	findOptions.SetLimit(1)
 	findOptions.SetSkip(0)
@@ -117,7 +122,8 @@ func (ctx *CandidateMongoDBContext) GetCandidate(fCtx *commons.FlowContext, cid 
 	return &candidates[0], nil
 }
 
-func (ctx *CandidateMongoDBContext) CreateCandidate(fCtx *commons.FlowContext, candidate *Candidate) (*Candidate, error) {
+// CreateCandidate inserts a candidate in db
+func (ctx *MongoDBContext) CreateCandidate(fCtx *commons.FlowContext, candidate *Candidate) (*Candidate, error) {
 	collection := ctx.DB.Database(commons.CandidateDb).Collection(commons.CandidateColl)
 	mctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	resp, err := collection.InsertOne(mctx, candidate)
@@ -131,6 +137,7 @@ func (ctx *CandidateMongoDBContext) CreateCandidate(fCtx *commons.FlowContext, c
 	return candidate, nil
 }
 
+// GetBSON converts a candidate in to BSON type
 func GetBSON(entity *Candidate) *bson.D {
 	// TODO: use reflect
 	name := bson.E{Key: "name", Value: entity.Name}
@@ -142,7 +149,8 @@ func GetBSON(entity *Candidate) *bson.D {
 	return &bson.D{name, email, mobile, rollNumber, age}
 }
 
-func (ctx *CandidateMongoDBContext) UpdateCandidate(fCtx *commons.FlowContext, cid string, entity *Candidate) (string, error) {
+// UpdateCandidate updates candidate in db by candidate id
+func (ctx *MongoDBContext) UpdateCandidate(fCtx *commons.FlowContext, cid string, entity *Candidate) (string, error) {
 	collection := ctx.DB.Database(commons.CandidateDb).Collection(commons.CandidateColl)
 
 	filter := bson.D{{Key: "id", Value: cid}}
@@ -160,7 +168,8 @@ func (ctx *CandidateMongoDBContext) UpdateCandidate(fCtx *commons.FlowContext, c
 	return res.UpsertedID.(string), nil
 }
 
-func (ctx *CandidateMongoDBContext) DeleteCandidate(fCtx *commons.FlowContext, cid string) (*Candidate, error) {
+// DeleteCandidate deletes candidate in db by candidate id
+func (ctx *MongoDBContext) DeleteCandidate(fCtx *commons.FlowContext, cid string) (*Candidate, error) {
 	collection := ctx.DB.Database(commons.CandidateDb).Collection(commons.CandidateColl)
 
 	if cid == commons.Empty {
