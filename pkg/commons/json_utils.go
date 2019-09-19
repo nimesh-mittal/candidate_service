@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 )
 
+// ToResponse generates standard response
 func ToResponse(payload interface{}, code string, error error) *Response {
 	if error == nil {
 		return &Response{payload, &APIError{code, Empty, error}}
@@ -11,6 +12,7 @@ func ToResponse(payload interface{}, code string, error error) *Response {
 	return &Response{payload, &APIError{code, error.Error(), error}}
 }
 
+// MakeResp generates response in slice of byte
 func MakeResp(payload interface{}, code string, err error) []byte {
 	var res Response
 	if err != nil {
