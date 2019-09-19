@@ -21,6 +21,7 @@ type StructuredLogger struct {
 	Logger *logrus.Logger
 }
 
+// create new server context
 func New() *ServerContext {
 	router := chi.NewRouter()
 
@@ -37,14 +38,17 @@ func New() *ServerContext {
 	return &ServerContext{Router: router}
 }
 
+// Starts server on address
 func (ctx *ServerContext) StartServer(address string) {
 	http.ListenAndServe(address, ctx.Router)
 }
 
+// register handler with a path
 func (ctx *ServerContext) Register(path string, handle func(http.ResponseWriter, *http.Request), method string) {
 	ctx.Router.MethodFunc(method, path, handle)
 }
 
+// mount sub router with a path
 func (ctx *ServerContext) Mount(path string, handler http.Handler) {
 	ctx.Router.Mount(path, handler)
 }

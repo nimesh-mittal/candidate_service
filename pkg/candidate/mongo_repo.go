@@ -53,7 +53,7 @@ func (ctx *CandidateMongoDBContext) ListCandidates(fCtx *commons.FlowContext, li
 	findOptions.SetLimit(int64(limit))
 	findOptions.SetSkip(int64(offset))
 
-	collection := ctx.DB.Database(commons.CANDIDATE_DB).Collection(commons.CANDIDATE_COLL)
+	collection := ctx.DB.Database(commons.CandidateDb).Collection(commons.CandidateColl)
 
 	// TODO: take filter as parameter
 	filter := bson.D{}
@@ -87,7 +87,7 @@ func (ctx *CandidateMongoDBContext) GetCandidate(fCtx *commons.FlowContext, cid 
 	findOptions.SetLimit(1)
 	findOptions.SetSkip(0)
 
-	collection := ctx.DB.Database(commons.CANDIDATE_DB).Collection(commons.CANDIDATE_COLL)
+	collection := ctx.DB.Database(commons.CandidateDb).Collection(commons.CandidateColl)
 	filter := bson.D{{Key: "id", Value: cid}}
 	cursor, err := collection.Find(context.TODO(), filter, findOptions)
 
@@ -118,7 +118,7 @@ func (ctx *CandidateMongoDBContext) GetCandidate(fCtx *commons.FlowContext, cid 
 }
 
 func (ctx *CandidateMongoDBContext) CreateCandidate(fCtx *commons.FlowContext, candidate *Candidate) (*Candidate, error) {
-	collection := ctx.DB.Database(commons.CANDIDATE_DB).Collection(commons.CANDIDATE_COLL)
+	collection := ctx.DB.Database(commons.CandidateDb).Collection(commons.CandidateColl)
 	mctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	resp, err := collection.InsertOne(mctx, candidate)
 
@@ -143,14 +143,14 @@ func GetBSON(entity *Candidate) *bson.D {
 }
 
 func (ctx *CandidateMongoDBContext) UpdateCandidate(fCtx *commons.FlowContext, cid string, entity *Candidate) (string, error) {
-	collection := ctx.DB.Database(commons.CANDIDATE_DB).Collection(commons.CANDIDATE_COLL)
+	collection := ctx.DB.Database(commons.CandidateDb).Collection(commons.CandidateColl)
 
 	filter := bson.D{{Key: "id", Value: cid}}
 	new := bson.D{{Key: "$set", Value: GetBSON(entity)}}
 	res, err := collection.UpdateOne(context.TODO(), filter, new)
 
 	if err != nil {
-		return commons.EMPTY, err
+		return commons.Empty, err
 	} else {
 		logrus.WithField(commons.TrackingID, fCtx).
 			Info("updated MatchedCount, ModifiedCount, UpsertedCount, UpsertedID ",
@@ -161,9 +161,9 @@ func (ctx *CandidateMongoDBContext) UpdateCandidate(fCtx *commons.FlowContext, c
 }
 
 func (ctx *CandidateMongoDBContext) DeleteCandidate(fCtx *commons.FlowContext, cid string) (*Candidate, error) {
-	collection := ctx.DB.Database(commons.CANDIDATE_DB).Collection(commons.CANDIDATE_COLL)
+	collection := ctx.DB.Database(commons.CandidateDb).Collection(commons.CandidateColl)
 
-	if cid == commons.EMPTY {
+	if cid == commons.Empty {
 		logrus.Error("candidate id is empty")
 		return nil, errors.New("candidate id is empty")
 	}

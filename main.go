@@ -8,9 +8,10 @@ import (
 	"os"
 )
 
+// Application initialisation do here
 func Init() {
 	// TODO: move this to docker file
-	os.Setenv("ENVIRONMENT", commons.PROD)
+	os.Setenv("ENVIRONMENT", commons.Prod)
 }
 
 func main() {

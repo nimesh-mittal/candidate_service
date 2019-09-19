@@ -12,7 +12,7 @@ import (
 
 func NewViperConfig() *Configuration {
 	viper.SetConfigName(GetConfigName())
-	viper.AddConfigPath(commons.CONFIG_DIR)
+	viper.AddConfigPath(commons.ConfigDir)
 
 	if err := viper.ReadInConfig(); err != nil {
 		logrus.Fatalf("Error reading config file, %s", err)
@@ -37,17 +37,17 @@ func NewViperConfig() *Configuration {
 }
 
 func GetConfigName() string {
-	env := os.Getenv(commons.ENV_VARIABLE)
-	if env == commons.DEV {
-		return commons.DEV_CONFIG_PATH
-	} else if env == commons.QA {
-		return commons.QA_CONFIG_PATH
-	} else if env == commons.PROD {
-		return commons.PROD_CONFIG_PATH
+	env := os.Getenv(commons.EnvVariable)
+	if env == commons.Dev {
+		return commons.DevConfigPath
+	} else if env == commons.Qa {
+		return commons.QaConfigPath
+	} else if env == commons.Prod {
+		return commons.ProdConfigPath
 	} else {
 		logrus.Fatalf("ENVIRONMENT variable is not set")
 	}
-	return commons.EMPTY
+	return commons.Empty
 }
 
 var once sync.Once

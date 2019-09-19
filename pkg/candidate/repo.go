@@ -72,7 +72,7 @@ func (ctx *DBContext) UpdateCandidate(f *commons.FlowContext, cid string, entity
 	candidate, err := ctx.GetCandidate(f, cid)
 
 	if err != nil {
-		return commons.EMPTY, err
+		return commons.Empty, err
 	}
 
 	// Hack because Omit does not work for primary id

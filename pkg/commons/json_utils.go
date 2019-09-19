@@ -6,7 +6,7 @@ import (
 
 func ToResponse(payload interface{}, code string, error error) *Response {
 	if error == nil {
-		return &Response{payload, &APIError{code, EMPTY, error}}
+		return &Response{payload, &APIError{code, Empty, error}}
 	}
 	return &Response{payload, &APIError{code, error.Error(), error}}
 }

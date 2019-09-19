@@ -19,7 +19,7 @@ type AdminResourceContext struct {
 }
 
 func NewAdminResource() *AdminResourceContext {
-	return &AdminResourceContext{HeartbeatStatus: commons.GREEN_STATUS}
+	return &AdminResourceContext{HeartbeatStatus: commons.GreenStatus}
 }
 
 func (ctx *AdminResourceContext) SafeClose() {
@@ -45,7 +45,7 @@ func (ctx *AdminResourceContext) NewAdminRouter() http.Handler {
 func (ctx *AdminResourceContext) GetHeartbeat(w http.ResponseWriter, r *http.Request) {
 	logrus.Info(config.GetInstance().Database.URL)
 	heartbeat := Heartbeat{Status: ctx.HeartbeatStatus}
-	res := commons.MakeResp(heartbeat, commons.EMPTY, nil)
+	res := commons.MakeResp(heartbeat, commons.Empty, nil)
 	w.Write(res)
 }
 
@@ -55,9 +55,9 @@ func (ctx *AdminResourceContext) GetHeartbeat(w http.ResponseWriter, r *http.Req
 // @Failure 400 {object} Response
 // @Router /admin/heartbeat/_stop [get]
 func (ctx *AdminResourceContext) StopHeartbeat(w http.ResponseWriter, r *http.Request) {
-	ctx.HeartbeatStatus = commons.RED_STATUS
+	ctx.HeartbeatStatus = commons.RedStatus
 	heartbeat := Heartbeat{Status: ctx.HeartbeatStatus}
-	res := commons.MakeResp(heartbeat, commons.EMPTY, nil)
+	res := commons.MakeResp(heartbeat, commons.Empty, nil)
 	w.Write(res)
 }
 
@@ -67,9 +67,9 @@ func (ctx *AdminResourceContext) StopHeartbeat(w http.ResponseWriter, r *http.Re
 // @Failure 400 {object} Response
 // @Router /admin/heartbeat/_start [get]
 func (ctx *AdminResourceContext) StartHeartbeat(w http.ResponseWriter, r *http.Request) {
-	ctx.HeartbeatStatus = commons.GREEN_STATUS
+	ctx.HeartbeatStatus = commons.GreenStatus
 	heartbeat := Heartbeat{Status: ctx.HeartbeatStatus}
-	res := commons.MakeResp(heartbeat, commons.EMPTY, nil)
+	res := commons.MakeResp(heartbeat, commons.Empty, nil)
 	w.Write(res)
 }
 
@@ -80,10 +80,10 @@ func (ctx *AdminResourceContext) StartHeartbeat(w http.ResponseWriter, r *http.R
 // @Router /admin/_health [get]
 func (ctx *AdminResourceContext) GetHealth(w http.ResponseWriter, r *http.Request) {
 
-	health := Health{KinesisHealth: commons.OK, CacheHealth: commons.OK, DBConnectionHealth: commons.OK,
-		CPU: commons.OK, Memory: commons.OK, Host: commons.OK, Disk: commons.OK}
+	health := Health{KinesisHealth: commons.Ok, CacheHealth: commons.Ok, DBConnectionHealth: commons.Ok,
+		CPU: commons.Ok, Memory: commons.Ok, Host: commons.Ok, Disk: commons.Ok}
 
-	res := commons.MakeResp(health, commons.EMPTY, nil)
+	res := commons.MakeResp(health, commons.Empty, nil)
 	w.Write(res)
 }
 
@@ -97,9 +97,9 @@ func (ctx *AdminResourceContext) GetInfo(w http.ResponseWriter, r *http.Request)
 	c, _ := cpu.Info()
 	h, _ := host.Info()
 	d, _ := disk.Usage("/")
-	health := Info{KinesisHealth: commons.OK, CacheHealth: commons.OK, DBConnectionHealth: commons.OK,
+	health := Info{KinesisHealth: commons.Ok, CacheHealth: commons.Ok, DBConnectionHealth: commons.Ok,
 		CPU: c, Memory: v, Host: h, Disk: d}
 
-	res := commons.MakeResp(health, commons.EMPTY, nil)
+	res := commons.MakeResp(health, commons.Empty, nil)
 	w.Write(res)
 }

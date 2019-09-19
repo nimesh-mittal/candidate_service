@@ -80,13 +80,13 @@ func (ctx *ResourceContext) ListCandidate(w http.ResponseWriter, r *http.Request
 	errs, ok := commons.ValidatePaginationParams(fCtx, limitStr, offsetStr)
 	if !ok {
 		msg := strings.Join(errs, " ")
-		res := commons.MakeResp(nil, commons.INVALID_REQUEST_PARAMETER, errors.New(msg))
+		res := commons.MakeResp(nil, commons.InvalidRequestParameter, errors.New(msg))
 		w.Write(res)
 		return
 	}
 
 	candidates, err := ctx.CandidateService.ListCandidates(fCtx, limit, offset)
-	res := commons.MakeResp(candidates, commons.EMPTY, err)
+	res := commons.MakeResp(candidates, commons.Empty, err)
 	w.Write(res)
 }
 
@@ -105,14 +105,14 @@ func (ctx *ResourceContext) GetCandidate(w http.ResponseWriter, r *http.Request)
 	errs, ok := commons.ValidateID(fCtx, cid)
 	if !ok {
 		msg := strings.Join(errs, " ")
-		res := commons.MakeResp(nil, commons.INVALID_REQUEST_PARAMETER, errors.New(msg))
+		res := commons.MakeResp(nil, commons.InvalidRequestParameter, errors.New(msg))
 		w.Write(res)
 		return
 	}
 
 	c, err := ctx.CandidateService.GetCandidate(fCtx, cid)
 
-	res := commons.MakeResp(c, commons.EMPTY, err)
+	res := commons.MakeResp(c, commons.Empty, err)
 	w.Write(res)
 }
 
@@ -131,7 +131,7 @@ func (ctx *ResourceContext) CreateCandidate(w http.ResponseWriter, r *http.Reque
 	var entity Candidate
 	err := decoder.Decode(&entity)
 	if err != nil {
-		res := commons.MakeResp(nil, commons.EMPTY, err)
+		res := commons.MakeResp(nil, commons.Empty, err)
 		w.Write(res)
 		return
 	}
@@ -145,13 +145,13 @@ func (ctx *ResourceContext) CreateCandidate(w http.ResponseWriter, r *http.Reque
 	ok, err := commons.Validate(&entity)
 
 	if !ok {
-		b := commons.MakeResp(nil, commons.INVALID_REQUEST_BODY, err)
+		b := commons.MakeResp(nil, commons.InvalidRequestBody, err)
 		w.Write(b)
 		return
 	}
 
 	c, err := ctx.CandidateService.CreateCandidate(fCtx, &entity)
-	b := commons.MakeResp(c, commons.EMPTY, err)
+	b := commons.MakeResp(c, commons.Empty, err)
 
 	w.Write(b)
 }
@@ -169,7 +169,7 @@ func (ctx *ResourceContext) UpdateCandidate(w http.ResponseWriter, r *http.Reque
 	cid := chi.URLParam(r, "CandidateID")
 
 	if commons.IsEmpty(cid) {
-		res := commons.MakeResp(nil, commons.EMPTY, errors.New("id is missing"))
+		res := commons.MakeResp(nil, commons.Empty, errors.New("id is missing"))
 		w.Write(res)
 	}
 
@@ -179,13 +179,13 @@ func (ctx *ResourceContext) UpdateCandidate(w http.ResponseWriter, r *http.Reque
 	err := decoder.Decode(&entity)
 
 	if err != nil {
-		res := commons.MakeResp(nil, commons.EMPTY, err)
+		res := commons.MakeResp(nil, commons.Empty, err)
 		w.Write(res)
 		return
 	}
 
 	id, err := ctx.CandidateService.UpdateCandidate(fCtx, cid, &entity)
-	res := commons.MakeResp(id, commons.EMPTY, err)
+	res := commons.MakeResp(id, commons.Empty, err)
 	w.Write(res)
 }
 
@@ -205,13 +205,13 @@ func (ctx *ResourceContext) DeleteCandidate(w http.ResponseWriter, r *http.Reque
 
 	if !ok {
 		msg := strings.Join(errs, " ")
-		res := commons.MakeResp(nil, commons.INVALID_REQUEST_PARAMETER, errors.New(msg))
+		res := commons.MakeResp(nil, commons.InvalidRequestParameter, errors.New(msg))
 		w.Write(res)
 		return
 	}
 
 	c, err := ctx.CandidateService.DeleteCandidate(fCtx, cid)
 
-	res := commons.MakeResp(c, commons.EMPTY, err)
+	res := commons.MakeResp(c, commons.Empty, err)
 	w.Write(res)
 }

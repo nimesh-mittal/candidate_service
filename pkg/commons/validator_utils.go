@@ -22,7 +22,7 @@ func Validate(entity interface{}) (bool, error) {
 func ToString(value url.Values) string {
 
 	if value == nil {
-		return EMPTY
+		return Empty
 	}
 	var buf strings.Builder
 	keys := make([]string, 0, len(value))
