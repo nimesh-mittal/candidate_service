@@ -14,18 +14,22 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type AdminResourceContext struct {
+// ResourceContext holds service instance
+type ResourceContext struct {
 	HeartbeatStatus string
 }
 
-func NewAdminResource() *AdminResourceContext {
-	return &AdminResourceContext{HeartbeatStatus: commons.GreenStatus}
+// NewAdminResource creates new resource context
+func NewAdminResource() *ResourceContext {
+	return &ResourceContext{HeartbeatStatus: commons.GreenStatus}
 }
 
-func (ctx *AdminResourceContext) SafeClose() {
+// SafeClose gets called when program terminates
+func (ctx *ResourceContext) SafeClose() {
 }
 
-func (ctx *AdminResourceContext) NewAdminRouter() http.Handler {
+// NewAdminRouter creates new admin router
+func (ctx *ResourceContext) NewAdminRouter() http.Handler {
 	r := chi.NewRouter()
 
 	r.Get(infra.WrapNR("/heartbeat", ctx.GetHeartbeat))
@@ -42,7 +46,7 @@ func (ctx *AdminResourceContext) NewAdminRouter() http.Handler {
 // @Success 200 {object} HeartbeatResponse
 // @Failure 400 {object} Response
 // @Router /admin/heartbeat [get]
-func (ctx *AdminResourceContext) GetHeartbeat(w http.ResponseWriter, r *http.Request) {
+func (ctx *ResourceContext) GetHeartbeat(w http.ResponseWriter, r *http.Request) {
 	logrus.Info(config.GetInstance().Database.URL)
 	heartbeat := Heartbeat{Status: ctx.HeartbeatStatus}
 	res := commons.MakeResp(heartbeat, commons.Empty, nil)
@@ -54,7 +58,7 @@ func (ctx *AdminResourceContext) GetHeartbeat(w http.ResponseWriter, r *http.Req
 // @Success 200 {object} HeartbeatResponse
 // @Failure 400 {object} Response
 // @Router /admin/heartbeat/_stop [get]
-func (ctx *AdminResourceContext) StopHeartbeat(w http.ResponseWriter, r *http.Request) {
+func (ctx *ResourceContext) StopHeartbeat(w http.ResponseWriter, r *http.Request) {
 	ctx.HeartbeatStatus = commons.RedStatus
 	heartbeat := Heartbeat{Status: ctx.HeartbeatStatus}
 	res := commons.MakeResp(heartbeat, commons.Empty, nil)
@@ -66,7 +70,7 @@ func (ctx *AdminResourceContext) StopHeartbeat(w http.ResponseWriter, r *http.Re
 // @Success 200 {object} HeartbeatResponse
 // @Failure 400 {object} Response
 // @Router /admin/heartbeat/_start [get]
-func (ctx *AdminResourceContext) StartHeartbeat(w http.ResponseWriter, r *http.Request) {
+func (ctx *ResourceContext) StartHeartbeat(w http.ResponseWriter, r *http.Request) {
 	ctx.HeartbeatStatus = commons.GreenStatus
 	heartbeat := Heartbeat{Status: ctx.HeartbeatStatus}
 	res := commons.MakeResp(heartbeat, commons.Empty, nil)
@@ -78,7 +82,7 @@ func (ctx *AdminResourceContext) StartHeartbeat(w http.ResponseWriter, r *http.R
 // @Success 200 {object} HeartbeatResponse
 // @Failure 400 {object} Response
 // @Router /admin/_health [get]
-func (ctx *AdminResourceContext) GetHealth(w http.ResponseWriter, r *http.Request) {
+func (ctx *ResourceContext) GetHealth(w http.ResponseWriter, r *http.Request) {
 
 	health := Health{KinesisHealth: commons.Ok, CacheHealth: commons.Ok, DBConnectionHealth: commons.Ok,
 		CPU: commons.Ok, Memory: commons.Ok, Host: commons.Ok, Disk: commons.Ok}
@@ -92,7 +96,7 @@ func (ctx *AdminResourceContext) GetHealth(w http.ResponseWriter, r *http.Reques
 // @Success 200 {object} HeartbeatResponse
 // @Failure 400 {object} Response
 // @Router /admin/_info [get]
-func (ctx *AdminResourceContext) GetInfo(w http.ResponseWriter, r *http.Request) {
+func (ctx *ResourceContext) GetInfo(w http.ResponseWriter, r *http.Request) {
 	v, _ := mem.VirtualMemory()
 	c, _ := cpu.Info()
 	h, _ := host.Info()
